@@ -54,6 +54,28 @@ struct DefaultAPIProvider: APIProvider {
             }
         }
     }
+    
+    func requestList<T: APIRequest>(_ request: T, completion: @escaping (Result<[T.Response], Error>) -> Void) {
+        guard let urlRequest = request.urlReqeust else {
+            return
+        }
+
+        execute(request: urlRequest) { result in
+            switch result {
+            case .success(let data):
+                guard let data = data else {
+                    return completion(.failure(APIError.invalidData))
+                }
+                let decoder = JSONDecoder()
+                guard let decoded = try? decoder.decode([T.Response].self, from: data) else {
+                    return completion(.failure(APIError.parsingError))
+                }
+                return completion(.success(decoded))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
 }
 
 enum APIError: LocalizedError {
