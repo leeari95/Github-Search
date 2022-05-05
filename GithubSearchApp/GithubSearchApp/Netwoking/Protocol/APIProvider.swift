@@ -13,4 +13,8 @@ protocol APIProvider {
         _ request: T,
         completion: @escaping (Result<T.Response, Error>) -> Void
     )
+    func requestList<T: APIRequest>(
+        _ request: T,
+        completion: @escaping (Result<[T.Response], Error>) -> Void
+    )
 }

@@ -39,7 +39,7 @@ struct ItemResponseDTO: Codable, APIResponse {
     let pushedAt: String
     let stargazersCount: Int
     let watchersCount: Int
-    let language: String
+    let language: String?
     let forksCount: Int
     let archived: Bool
     let disabled: Bool
@@ -47,7 +47,7 @@ struct ItemResponseDTO: Codable, APIResponse {
     let visibility: String
     let forks: Int
     let watchers: Int
-    let score: Int
+    let score: Int?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
