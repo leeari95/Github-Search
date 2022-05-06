@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RepositoryItem {
+struct RepositoryItem: Equatable {
     let id: Int
     let name: String
     let login: String
@@ -29,6 +29,10 @@ struct RepositoryItem {
         self.description = description
         self.isMarkStar = isMarkStar
         self.starredCount = starredCount
+    }
+    
+    static func == (lhs: RepositoryItem, rhs: RepositoryItem) -> Bool {
+        return lhs.id == rhs.id
     }
     
     mutating func toggleStarred() {
