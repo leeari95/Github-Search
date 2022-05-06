@@ -16,11 +16,6 @@ struct User {
     
     func path(url: String) -> String {
         let path = url.components(separatedBy: "users/").last ?? ""
-        
-        // "https://api.github.com/users/leeari95/starred{/owner}{/repo}"
-        if path.contains("{") {
-            return path.last?.description.components(separatedBy: "{").first ?? ""
-        }
         return path
     }
 }
