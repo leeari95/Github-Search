@@ -26,7 +26,10 @@ struct DefaultAPIProvider: APIProvider {
                 return
             }
             guard (200...299).contains(response.statusCode) else {
-                completion(.failure(APIError.statusCode(response.statusCode)))
+                completion(.failure(APIError.statusCode(
+                    code: response.statusCode,
+                    message: String(data: data ?? Data(), encoding: .utf8) ?? ""
+                )))
                 return
             }
             completion(.success(data))
@@ -80,7 +83,7 @@ struct DefaultAPIProvider: APIProvider {
 
 enum APIError: LocalizedError {
     case responseCasting
-    case statusCode(Int)
+    case statusCode(code: Int, message: String)
     case notFoundURL
     case invalidData
     case parsingError
@@ -89,8 +92,8 @@ enum APIError: LocalizedError {
         switch self {
         case .responseCasting:
             return "캐스팅에 실패하였습니다."
-        case .statusCode(let code):
-            return "상태 코드 에러 : \(code)"
+        case .statusCode(let code, let message):
+            return "상태 코드 에러 : \(code)\n 오류 메세지 : \(message)"
         case .notFoundURL:
             return "URL을 찾을 수 없습니다."
         case .invalidData:
