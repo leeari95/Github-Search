@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
 
+// MARK: - UserResponseDTO
 struct UserResponseDTO: Codable, APIResponse {
     let login: String
     let id: Int
@@ -65,6 +65,7 @@ struct UserResponseDTO: Codable, APIResponse {
     }
 }
 
+// MARK: - Mappings to Domain
 extension UserResponseDTO {
     func toDomain() -> User {
         let starredURL = starredURL.components(separatedBy: "{").first ?? ""

@@ -79,12 +79,6 @@ struct ItemResponseDTO: Codable, APIResponse {
     }
 }
 
-extension ItemResponseDTO {
-    func toDomain() -> RepositoryItem {
-        .init(id: id, name: name, login: owner.login, description: itemDescription ?? "", isMarkStar: false, starredCount: stargazersCount)
-    }
-}
-
 // MARK: - LicenseResponseDTO
 struct LicenseResponseDTO: Codable, APIResponse {
     let key: String
@@ -126,5 +120,18 @@ struct OwnerResponseDTO: Codable, APIResponse {
         case reposUrl = "repos_url"
         case type = "type"
         case siteAdmin = "site_admin"
+    }
+}
+
+// MARK: - Mappings to Domain
+extension RepoSearchResponseDTO {
+    func toDomain() -> SearchRepo {
+        .init(totalCount: totalCount, items: items.map { $0.toDomain() })
+    }
+}
+
+extension ItemResponseDTO {
+    func toDomain() -> RepositoryItem {
+        .init(id: id, name: name, login: owner.login, description: itemDescription ?? "", isMarkStar: false, starredCount: stargazersCount)
     }
 }
