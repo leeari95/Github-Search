@@ -10,7 +10,7 @@ import UIKit
 
 struct LoginManager {
     private let apiRequest: DefaultAPIProvider
-    static var isLogin: Bool = KeychainManager.shard.load("Token") == nil ? false : true
+    static var isLogin: Bool = KeychainStorage.shard.load("Token") == nil ? false : true
     
     init(apiRequest: DefaultAPIProvider = DefaultAPIProvider()) {
         self.apiRequest = apiRequest
@@ -37,7 +37,7 @@ struct LoginManager {
                 .flatMap { $0["access_token"] }
                 .flatMap {
                     print($0)
-                    if KeychainManager.shard.save(key: "Token", value: $0) {
+                    if KeychainStorage.shard.save(key: "Token", value: $0) {
                         print("사용자의 토큰을 키체인에 저장하는데 성공했습니다!")
                     } else {
                         print("토큰을 가져오지 못했습니다.")
@@ -50,6 +50,6 @@ struct LoginManager {
     }
     
     func logout() {
-        KeychainManager.shard.delete(key: "Token")
+        KeychainStorage.shard.delete(key: "Token")
     }
 }

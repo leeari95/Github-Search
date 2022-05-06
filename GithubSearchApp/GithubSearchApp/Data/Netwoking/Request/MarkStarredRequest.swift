@@ -14,7 +14,7 @@ struct MarkStarredRequest {
     var headers: [String : String]? {
         return [
             "Accept": "application/vnd.github.v3+json",
-            "Authorization": "token \(KeychainManager.shard.load("Token") ?? "")"
+            "Authorization": "token \(KeychainStorage.shard.load("Token") ?? "")"
         ]
     }
     

@@ -1,5 +1,5 @@
 //
-//  KeychainManager.swift
+//  KeychainStorage.swift
 //  GithubSearchApp
 //
 //  Created by Ari on 2022/05/04.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class KeychainManager {
-    static let shard = KeychainManager()
+final class KeychainStorage {
+    static let shard = KeychainStorage()
     
     private init() {}
     
