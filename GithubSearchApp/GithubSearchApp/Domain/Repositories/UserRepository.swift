@@ -21,7 +21,7 @@ protocol UserRepository {
         completion: @escaping (Result<[RepositoryItem], Error>) -> Void
     )
     
-    func star(completion: @escaping (Result<Bool, Error>) -> Void)
+    func star(name: String, title: String, completion: @escaping (Result<Bool, Error>) -> Void)
     
-    func unStar(completion: @escaping (Result<Bool, Error>) -> Void)
+    func unStar(name: String, title: String, completion: @escaping (Result<Bool, Error>) -> Void)
 }

@@ -55,10 +55,8 @@ final class DefaultUserRepository: UserRepository {
         }
     }
     
-    func star(completion: @escaping (Result<Bool, Error>) -> Void) {
-        guard let url = user?.starredURL, let path = user?.path(url: url) else {
-            return
-        }
+    func star(name: String, title: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let path = "\(name)/\(title)"
         storage.putStarred(path: path) { result in
             switch result {
             case .success(let isMarked):
@@ -69,10 +67,8 @@ final class DefaultUserRepository: UserRepository {
         }
     }
     
-    func unStar(completion: @escaping (Result<Bool, Error>) -> Void) {
-        guard let url = user?.starredURL, let path = user?.path(url: url) else {
-            return
-        }
+    func unStar(name: String, title: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let path = "\(name)/\(title)"
         storage.deleteStarred(path: path) { result in
             switch result {
             case .success(let isMarked):
