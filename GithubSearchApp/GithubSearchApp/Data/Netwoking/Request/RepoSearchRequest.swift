@@ -25,7 +25,7 @@ struct RepoSearchRequest: APIRequest {
         ]
     }
     
-    init(keyword: String, page: UInt = 1, perPage: UInt = 20) {
+    init(keyword: String, page: UInt, perPage: UInt) {
         self.keyword = keyword
         self.page = page
         self.perPage = perPage
