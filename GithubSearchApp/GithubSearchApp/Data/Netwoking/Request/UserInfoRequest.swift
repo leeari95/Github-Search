@@ -18,7 +18,7 @@ struct UserInfoRequest: APIRequest {
     var headers: [String : String]? {
         [
             "Accept": "application/vnd.github.v3+json",
-            "Authorization": "token \(KeychainManager.shard.load("Token") ?? "")"
+            "Authorization": "token \(KeychainStorage.shard.load("Token") ?? "")"
         ]
     }    
 }
