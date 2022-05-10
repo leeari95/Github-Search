@@ -24,14 +24,14 @@ class RepoListCell: UICollectionViewListCell {
         customConfiguration.owner = item?.login
         customConfiguration.description = item?.description
         customConfiguration.starredCount = "★ \(item?.starredCount ?? 0)"
-        customConfiguration.isMarkStar = item?.isMarkStar
+        customConfiguration.isMarkStar = item?.isMarkedStar
         contentConfiguration = customConfiguration
 
         let contentView = contentView as? RepoContentView
-        if item?.isMarkStar == true {
-            contentView?.changeStarredToggleButton()
+        if item?.isMarkedStar == true {
+            contentView?.changeStarredToggleButton(systemName: "star.fill")
         } else {
-            contentView?.reset()
+            contentView?.changeStarredToggleButton(systemName: "star")
         }
     }
 }
