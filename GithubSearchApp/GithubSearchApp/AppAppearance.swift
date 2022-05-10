@@ -11,5 +11,6 @@ final class AppAppearance {
     static func setUpAppearance() {
         UITabBar.appearance().tintColor = .label
         UIBarButtonItem.appearance().tintColor = .label
+        UINavigationBar.appearance().prefersLargeTitles = true
     }
 }
