@@ -24,8 +24,9 @@ extension APIRequest {
             return nil
         }
         var urlComponents = URLComponents(string: url.absoluteString)
-        let urlQuries = self.parameters.map { key, value in
-            URLQueryItem(name: key, value: value)
+        let urlQuries = self.parameters.map { key, value -> URLQueryItem in
+            let value = value.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            return URLQueryItem(name: key, value: value)
         }
 
         urlComponents?.percentEncodedQueryItems = urlQuries
