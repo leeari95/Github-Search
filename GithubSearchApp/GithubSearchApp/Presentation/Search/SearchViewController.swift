@@ -19,29 +19,27 @@ class SearchViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.delegate = self
         return collectionView
     }()
     
     lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchController.searchBar.placeholder = "Please enter your search term."
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.delegate = self
         return searchController
     }()
     
-    var items = [
-        RepositoryItem(id: 123, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
-        RepositoryItem(id: 121, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-        RepositoryItem(id: 122, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-        RepositoryItem(id: 120, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
-        RepositoryItem(id: 124, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0),
-        RepositoryItem(id: 125, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
-        RepositoryItem(id: 126, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-        RepositoryItem(id: 127, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-        RepositoryItem(id: 128, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
-        RepositoryItem(id: 129, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0)
-    ]
+    lazy var activityView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView(style: .large)
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        activityView.hidesWhenStopped = true
+        activityView.stopAnimating()
+        activityView.center = CGPoint(x:  self.view.center.x, y:  self.view.center.y - 100)
+        return activityView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +61,10 @@ class SearchViewController: UIViewController {
     
     func setUpSubViews() {
         view.addSubview(collectionView)
+        view.addSubview(activityView)
         NSLayoutConstraint.activate([
+            activityView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -83,6 +84,14 @@ class SearchViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(items)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
 }
 
