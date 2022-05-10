@@ -12,7 +12,7 @@ struct RepositoryItem: Equatable, Hashable {
     let name: String
     let login: String
     let description: String
-    private(set) var isMarkStar: Bool
+    private(set) var isMarkedStar: Bool
     private(set) var starredCount: Int
     
     init(
@@ -27,17 +27,18 @@ struct RepositoryItem: Equatable, Hashable {
         self.name = name
         self.login = login
         self.description = description
-        self.isMarkStar = isMarkStar
+        self.isMarkedStar = isMarkStar
         self.starredCount = starredCount
     }
-    
-    static func == (lhs: RepositoryItem, rhs: RepositoryItem) -> Bool {
-        return lhs.id == rhs.id
+
+    mutating func changedMarkState(for state: Bool) {
+       isMarkedStar = state
+        
     }
     
     mutating func toggleStarred() {
-        isMarkStar = isMarkStar ? false : true
-        if isMarkStar {
+        isMarkedStar.toggle()
+        if isMarkedStar {
             starredCount += 1
         } else {
             starredCount -= 1
