@@ -8,12 +8,21 @@
 import UIKit
 
 
-struct LoginManager {
-    private let apiRequest: DefaultAPIProvider
-    static var isLogin: Bool = KeychainStorage.shard.load("Token") == nil ? false : true
+final class LoginManager {
+    static let shared = LoginManager()
+    private init() {}
     
-    init(apiRequest: DefaultAPIProvider = DefaultAPIProvider()) {
-        self.apiRequest = apiRequest
+    private let apiRequest: APIProvider = DefaultAPIProvider()
+    var isLogged: Bool {
+        KeychainStorage.shard.load("Token") == nil ? false : true
+    }
+    private var listeners: [WeakReference<AuthChangeListener>] = []
+    
+    func addListener(_ listener: AuthChangeListener) {
+        if listeners.compactMap({ $0.value?.instanceName() }).contains(listener.instanceName()) {
+            return
+        }
+        listeners.append(WeakReference(value: listener))
     }
     
     func authorize() {
@@ -23,7 +32,7 @@ struct LoginManager {
         UIApplication.shared.open(url)
     }
     
-    func requestToken(code: String) {
+    func requestToken(code: String, completion: ((Result<Bool, Error>) -> Void)?) {
         guard let url = APIAddress.token(clientID: Secrets.clinetID, clientSecret: Secrets.clinetSecret, code: code).url else {
             return
         }
@@ -36,20 +45,32 @@ struct LoginManager {
                 data.flatMap { try? JSONSerialization.jsonObject(with: $0, options: []) as? [String: String] }
                 .flatMap { $0["access_token"] }
                 .flatMap {
-                    print($0)
                     if KeychainStorage.shard.save(key: "Token", value: $0) {
                         print("사용자의 토큰을 키체인에 저장하는데 성공했습니다!")
+                        self.listeners.first?.value?.authStateDidChange(isLogged: true)
+                        completion?(.success(true))
                     } else {
                         print("토큰을 가져오지 못했습니다.")
+                        completion?(.success(false))
                     }
                 }
             case .failure(let error):
-                print(error.localizedDescription)
+                completion?(.failure(error))
             }
         }
     }
     
     func logout() {
         KeychainStorage.shard.delete(key: "Token")
+        listeners.forEach {
+            $0.value?.authStateDidChange(isLogged: false)
+        }
+    }
+    
+    func executeNextWork(_ order: String, isLogged: Bool = LoginManager.shared.isLogged) {
+        guard let index = listeners.compactMap({ $0.value?.instanceName() }).firstIndex(of: order) else {
+            return
+        }
+        listeners[index].value?.authStateDidChange(isLogged: isLogged)
     }
 }

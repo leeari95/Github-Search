@@ -13,7 +13,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         let code = URLContexts.first?.url.absoluteString.components(separatedBy: "code=").last
-        code.flatMap { LoginManager().requestToken(code: $0) }
+        code.flatMap {
+            LoginManager.shared.requestToken(code: $0) { result in
+                switch result {
+                case .success(let isLogin):
+                    DispatchQueue.main.async {
+                        let mainViewController = (self.window?.rootViewController as? UITabBarController)
+                            .flatMap { $0.selectedViewController as? UINavigationController }
+                            .flatMap { $0.topViewController as? SearchViewController }
+
+                        if isLogin {
+                            mainViewController?.navigationItem.rightBarButtonItem?.title = "Logout"
+                        } else {
+                            mainViewController?.showAlert(title: "Notice", message: "Login failed.", completion: nil)
+                        }
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+        }
+        
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
