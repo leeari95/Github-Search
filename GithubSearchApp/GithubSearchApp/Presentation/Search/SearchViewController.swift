@@ -112,7 +112,3 @@ extension SearchViewController: UISearchBarDelegate {
         self.dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
-
-enum Section {
-    case main
-}
