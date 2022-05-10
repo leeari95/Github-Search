@@ -93,6 +93,7 @@ final class UserUseCase {
     }
 }
 
+// MARK: - Login event handler
 extension UserUseCase: AuthChangeListener {
     func instanceName() -> String {
         String(describing: UserUseCase.self)
