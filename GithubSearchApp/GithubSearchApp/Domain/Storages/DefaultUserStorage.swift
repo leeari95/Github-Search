@@ -9,7 +9,14 @@ import Foundation
 
 final class DefaultUserStorage: UserStorage {
     private let apiProvider: APIProvider
-    private var userInfo: UserResponseDTO?
+    private var userInfo: UserResponseDTO? {
+        didSet {
+            guard KeychainStorage.shard.load("Token") != nil else {
+                return
+            }
+            LoginManager.shared.executeNextWork(String(describing: DefaultUserRepository.self))
+        }
+    }
     
     var info: UserResponseDTO? {
         return userInfo
@@ -17,12 +24,7 @@ final class DefaultUserStorage: UserStorage {
     
     init(apiProvider: APIProvider = DefaultAPIProvider()) {
         self.apiProvider = apiProvider
-        if KeychainStorage.shard.load("Token") != nil {
-            let request = UserInfoRequest()
-            getInfoResponse(for: request) { result in
-                self.userInfo = try? result.get()
-            }
-        }
+        LoginManager.shared.addListener(self)
     }
     
     func getInfoResponse(
@@ -98,6 +100,32 @@ enum UserStorageError: LocalizedError {
             return "요청이 유효하지 않습니다."
         case .unknown:
             return "알 수 없는 에러가 발생했습니다."
+        }
+    }
+}
+
+extension DefaultUserStorage: AuthChangeListener {
+    func instanceName() -> String {
+        String(describing: DefaultUserStorage.self)
+    }
+    
+    func authStateDidChange(isLogged: Bool) {
+        if isLogged {
+            fetchUserInfo()
+        } else {
+            self.userInfo = nil
+        }
+    }
+    
+    private func fetchUserInfo() {
+        let request = UserInfoRequest()
+        getInfoResponse(for: request) { result in
+            switch result {
+            case .success(let info):
+                self.userInfo = info
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
