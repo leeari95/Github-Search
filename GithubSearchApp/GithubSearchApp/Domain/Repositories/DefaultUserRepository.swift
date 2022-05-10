@@ -8,7 +8,14 @@
 import Foundation
 
 final class DefaultUserRepository: UserRepository {
-    private var user: User?
+    private var user: User? {
+        didSet {
+            guard KeychainStorage.shard.load("Token") != nil else {
+                return
+            }
+            LoginManager.shared.executeNextWork(String(describing: UserUseCase.self))
+        }
+    }
     private let storage: UserStorage
     
     var name: String? {
@@ -21,7 +28,7 @@ final class DefaultUserRepository: UserRepository {
     
     init(storage: UserStorage = DefaultUserStorage()) {
         self.storage = storage
-        self.user = storage.info?.toDomain()
+        LoginManager.shared.addListener(self)
     }
     
     func fetchRepositories(
@@ -87,6 +94,20 @@ enum UserRepositoryError: LocalizedError {
         switch self {
         case .invalidPath:
             return "유효하지 않는 path입니다. 다시 확인해주세요."
+        }
+    }
+}
+
+extension DefaultUserRepository: AuthChangeListener {
+    func instanceName() -> String {
+        String(describing: DefaultUserRepository.self)
+    }
+    
+    func authStateDidChange(isLogged: Bool) {
+        if isLogged {
+            self.user = self.storage.info?.toDomain()
+        } else {
+            user = nil
         }
     }
 }

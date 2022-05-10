@@ -9,8 +9,14 @@ import Foundation
 
 final class UserUseCase {
     private let repository: UserRepository
-    private let loginManager: LoginManager
-    private var starredList: [RepositoryItem]
+    private var starredList: [Int] {
+        didSet {
+            guard KeychainStorage.shard.load("Token") != nil else {
+                return
+            }
+            LoginManager.shared.executeNextWork(String(describing: SearchViewModel.self))
+        }
+    }
 
     var islogin: Bool {
         KeychainStorage.shard.load("Token") != nil
@@ -20,14 +26,17 @@ final class UserUseCase {
         return (repository.name ?? "", repository.profileImageURL ?? "")
     }
     
+    var userStarredList: [Int] {
+        return starredList
+    }
+    
     init(
         repository: UserRepository = DefaultUserRepository(),
-        loginManager: LoginManager = LoginManager(),
-        starredList: [RepositoryItem] = []
+        starredList: [Int] = []
     ) {
         self.repository = repository
-        self.loginManager = loginManager
         self.starredList = starredList
+        LoginManager.shared.addListener(self)
     }
     
     func setUp() {
@@ -56,34 +65,57 @@ final class UserUseCase {
         }
     }
     
-    // 별표 아이콘을 탭했을 때 기존에 별표 표시한 레파지토리인지 확인하는 로직
     func toggleStarred(
         for item: RepositoryItem,
-        completion: @escaping (Result<Bool, Error>) -> Void
+        completion: @escaping (Error?) -> Void
     ) {
-        if starredList.contains(item) {
+        if starredList.contains(item.id) {
             repository.unStar(name: item.login, title: item.name) { result in
                 switch result {
-                case .success(let isMarked):
-                    if isMarked, let index = self.starredList.firstIndex(of: item) {
-                        self.starredList.remove(at: index)
+                case .success:
+                    guard let index = self.starredList.firstIndex(of: item.id) else {
+                        return
                     }
-                    completion(.success(isMarked))
+                    self.starredList.remove(at: index)
+                    completion(nil)
                 case .failure(let error):
-                    completion(.failure(error))
+                    completion(error)
                 }
             }
         } else {
             repository.star(name: item.login, title: item.name) { result in
                 switch result {
-                case .success(let isMarked):
-                    if isMarked {
-                        self.starredList.append(item)
-                    }
-                    completion(.success(isMarked))
+                case .success:
+                    self.starredList.append(item.id)
+                    completion(nil)
                 case .failure(let error):
-                    completion(.failure(error))
+                    completion(error)
                 }
+            }
+        }
+    }
+}
+
+extension UserUseCase: AuthChangeListener {
+    func instanceName() -> String {
+        String(describing: UserUseCase.self)
+    }
+    
+    func authStateDidChange(isLogged: Bool) {
+        if isLogged {
+            self.fetchUserStarredList()
+        } else {
+            starredList = []
+        }
+    }
+    
+    private func fetchUserStarredList() {
+        repository.fetchStarredList { result in
+            switch result {
+            case .success(let items):
+                self.starredList = items.map { $0.id }
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
