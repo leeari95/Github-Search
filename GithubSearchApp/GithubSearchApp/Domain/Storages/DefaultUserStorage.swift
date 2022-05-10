@@ -104,6 +104,7 @@ enum UserStorageError: LocalizedError {
     }
 }
 
+// MARK: - Login event handler
 extension DefaultUserStorage: AuthChangeListener {
     func instanceName() -> String {
         String(describing: DefaultUserStorage.self)
