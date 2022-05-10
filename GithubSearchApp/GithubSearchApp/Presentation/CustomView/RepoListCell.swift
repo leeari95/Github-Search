@@ -20,6 +20,7 @@ class RepoListCell: UICollectionViewListCell {
     
     override func updateConfiguration(using state: UICellConfigurationState) {
         var customConfiguration = RepoContentConfiguration().updated(for: state)
+        customConfiguration.item = item
         customConfiguration.title = item?.name
         customConfiguration.owner = item?.login
         customConfiguration.description = item?.description
@@ -37,6 +38,7 @@ class RepoListCell: UICollectionViewListCell {
 }
 
 struct RepoContentConfiguration: UIContentConfiguration {
+    var item: RepositoryItem?
     var title: String?
     var owner: String?
     var description: String?
