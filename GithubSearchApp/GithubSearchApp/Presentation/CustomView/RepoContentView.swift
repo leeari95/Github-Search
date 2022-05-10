@@ -128,11 +128,12 @@ class RepoContentView: UIView, UIContentView {
     }
     
     @objc private func didTapStarredButton(_ sender: UIButton) {
-        if sender.imageView?.image == UIImage(systemName: "star") {
-            changeStarredToggleButton(systemName: "star.fill")
-        } else {
-            changeStarredToggleButton(systemName: "star")
+        guard KeychainStorage.shard.load("Token") != nil else {
+            NotificationCenter.default.post(name: .showNotiAlert, object: Message(title: "Not logged in", description: "Login is required."))
+            return
         }
+        let item = (configuration as? RepoContentConfiguration)?.item
+        NotificationCenter.default.post(name: .starred, object: item)
     }
     
     func changeStarredToggleButton(systemName: String) {

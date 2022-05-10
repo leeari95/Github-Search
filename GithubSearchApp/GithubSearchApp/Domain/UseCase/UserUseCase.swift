@@ -37,20 +37,17 @@ final class UserUseCase {
         self.repository = repository
         self.starredList = starredList
         LoginManager.shared.addListener(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(starred(_:)), name: .starred, object: nil)
     }
     
-    func setUp() {
-        if islogin {
-            repository.fetchStarredList { result in
-                switch result {
-                case .success(let items):
-                    self.starredList = items
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+    @objc private func starred(_ sender: Notification) {
+        guard let item = sender.object as? RepositoryItem else {
+            return
+        }
+        toggleStarred(for: item) { error in
+            if let error = error {
+                print(error.localizedDescription)
             }
-        } else {
-            starredList = []
         }
     }
     
