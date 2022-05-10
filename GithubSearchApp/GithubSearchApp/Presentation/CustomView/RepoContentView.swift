@@ -129,21 +129,14 @@ class RepoContentView: UIView, UIContentView {
     
     @objc private func didTapStarredButton(_ sender: UIButton) {
         if sender.imageView?.image == UIImage(systemName: "star") {
-            let starImage = UIImage(systemName: "star.fill")
-            starredToggleButton.setImage(starImage, for: .normal)
+            changeStarredToggleButton(systemName: "star.fill")
         } else {
-            let starImage = UIImage(systemName: "star")
-            starredToggleButton.setImage(starImage, for: .normal)
+            changeStarredToggleButton(systemName: "star")
         }
     }
     
-    func changeStarredToggleButton() {
-        let starImage = UIImage(systemName: "star.fill")
-        starredToggleButton.setImage(starImage, for: .normal)
-    }
-    
-    func reset() {
-        let starImage = UIImage(systemName: "star")
+    func changeStarredToggleButton(systemName: String) {
+        let starImage = UIImage(systemName: systemName)
         starredToggleButton.setImage(starImage, for: .normal)
     }
 }
