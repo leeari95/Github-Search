@@ -73,6 +73,7 @@ class RepoContentView: UIView, UIContentView {
         label.setContentHuggingPriority(UILayoutPriority(251), for: .horizontal)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
         return label
     }()
     
