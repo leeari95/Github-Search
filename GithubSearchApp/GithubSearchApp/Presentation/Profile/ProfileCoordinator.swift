@@ -17,7 +17,7 @@ final class ProfileCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = SearchViewModel()
+        let viewModel = ProfileViewModel()
         let profileViewController = ProfileViewController()
         profileViewController.viewModel = viewModel
         rootViewController.setViewControllers([profileViewController], animated: false)
