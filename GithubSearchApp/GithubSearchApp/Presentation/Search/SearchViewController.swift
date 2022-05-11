@@ -53,6 +53,7 @@ class SearchViewController: UIViewController {
         setUpNavigationItem()
         setUpSubViews()
         setUpCollectionView()
+        setUpNotification()
         edgesForExtendedLayout = .bottom
     }
     
@@ -100,6 +101,18 @@ class SearchViewController: UIViewController {
     func setUpCollectionView() {
         let nib = UINib(nibName: "RepoListCell", bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: "cell")
+    }
+    private func setUpNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showNotiAlert(_:)), name: .showNotiAlert, object: nil)
+    }
+    
+    @objc private func showNotiAlert(_ sender: Notification) {
+        let message = sender.object as? Message
+        message.flatMap {
+            showAlert(title: $0.title, message: $0.description) {
+                self.viewModel?.didTapLoginButton()
+            }
+        }
     }
 }
 
