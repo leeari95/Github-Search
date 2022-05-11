@@ -12,14 +12,17 @@ struct RepoSearchRequest: APIRequest {
     let method: HTTPMethod = .get
     let baseURL: URL? = URL(string: "https://api.github.com/")
     let path: String = "search/repositories"
-    let headers: [String : String]? = ["Accept": "application/vnd.github.v3+json"]
+    let headers: [String : String]? = [
+        "Accept": "application/vnd.github.v3+json",
+        "Authorization": "token \(Secrets.developerToken)"
+    ]
     private var keyword: String
     private var perPage: UInt
     let page: UInt
     
     var parameters: [String : String] {
         [
-            "q": keyword,
+            "q": "\(keyword) in:name",
             "per_page": perPage.description,
             "page": page.description
         ]
@@ -29,14 +32,6 @@ struct RepoSearchRequest: APIRequest {
         self.keyword = keyword
         self.page = page
         self.perPage = perPage
-    }
-    
-    mutating func editSearchWord(to searchWord: String) {
-        keyword = searchWord
-    }
-    
-    mutating func nextPage() {
-        perPage += 20
     }
 }
 
