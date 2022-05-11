@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RepositoryItem: Equatable, Hashable {
+struct RepositoryItem: Equatable {
     let id: Int
     let name: String
     let login: String
@@ -44,4 +44,16 @@ struct RepositoryItem: Equatable, Hashable {
             starredCount -= 1
         }
     }
+}
+
+extension RepositoryItem: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(login)
+        hasher.combine(description)
+    }
+    static func ==(lhs: RepositoryItem, rhs: RepositoryItem) -> Bool {
+        return lhs.id == rhs.id && lhs.name == rhs.name && lhs.login == rhs.description
+     }
 }
