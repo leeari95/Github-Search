@@ -9,17 +9,19 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, RepositoryItem>!
-    var snapshot: NSDiffableDataSourceSnapshot<Section, RepositoryItem>!
-    
+
     lazy var collectionView: UICollectionView = {
-        let configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let layout = DynamicHeightFlowLayout()
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .black
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.keyboardDismissMode = .onDrag
+        collectionView.alwaysBounceVertical = true
+        collectionView.alwaysBounceHorizontal = false
         collectionView.delegate = self
+        collectionView.prefetchDataSource = self
+        collectionView.dataSource = self
         return collectionView
     }()
     
@@ -33,7 +35,12 @@ class SearchViewController: UIViewController {
     }()
     
     lazy var activityView: UIActivityIndicatorView = {
-        let activityView = UIActivityIndicatorView(style: .large)
+        let activityView = UIActivityIndicatorView()
+        if #available(iOS 13.0, *) {
+            activityView.style = .medium
+        } else {
+            activityView.style = .gray
+        }
         activityView.translatesAutoresizingMaskIntoConstraints = false
         activityView.hidesWhenStopped = true
         activityView.stopAnimating()
@@ -46,6 +53,7 @@ class SearchViewController: UIViewController {
         setUpNavigationItem()
         setUpSubViews()
         setUpCollectionView()
+        edgesForExtendedLayout = .bottom
     }
     
     func setUpNavigationItem() {
@@ -54,9 +62,26 @@ class SearchViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = true
         navigationController?.navigationBar.sizeToFit()
         
-        let loginButton = UIBarButtonItem(title: "Login", style: .plain, target: nil, action: nil)
-        loginButton.tintColor = .label
+        let loginButton = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(didTapLoginButton(_:)))
+        if #available(iOS 13.0, *) {
+            loginButton.tintColor = .label
+        } else {
+            loginButton.tintColor = .white
+        }
         navigationItem.rightBarButtonItem = loginButton
+    }
+    
+    @objc private func didTapLoginButton(_ sender: UIBarButtonItem) {
+        if KeychainStorage.shard.load("Token") != nil {
+            showAlert(title: "Notice", message: "Are you sure you want to log out?") {
+                self.viewModel?.didTapLogoutButton()
+                DispatchQueue.main.async {
+                    self.navigationItem.rightBarButtonItem?.title = "Login"
+                }
+            }
+        } else {
+            viewModel?.didTapLoginButton()
+        }
     }
     
     func setUpSubViews() {
@@ -73,26 +98,33 @@ class SearchViewController: UIViewController {
     }
     
     func setUpCollectionView() {
-        let registration = UICollectionView.CellRegistration<RepoListCell, RepositoryItem>  { cell, indexPath, item in
-            cell.item = item
-        }
-        dataSource = UICollectionViewDiffableDataSource<Section, RepositoryItem>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, item: RepositoryItem) -> UICollectionViewCell? in
-            let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
-            return cell
-        }
-        snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(items)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        let nib = UINib(nibName: "RepoListCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "cell")
     }
 }
 
-extension SearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            collectionView.deselectItem(at: indexPath, animated: true)
+extension SearchViewController: UICollectionViewDataSource {
+    func collectionView(
+            _ collectionView: UICollectionView,
+            numberOfItemsInSection section: Int
+        ) -> Int {
+            return viewModel?.items.value?.count ?? 0
         }
-    }
+    
+    func collectionView(
+            _ collectionView: UICollectionView,
+            cellForItemAt indexPath: IndexPath
+        ) -> UICollectionViewCell {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "cell",
+                for: indexPath
+            ) as? RepoListCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(item: viewModel?.items.value?[indexPath.item])
+            return cell
+        }
+
 }
 
 extension SearchViewController: UISearchBarDelegate {
@@ -101,14 +133,9 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        guard searchBar.searchTextField.text != "" else {
+        guard searchBar.text != "" else {
             return
         }
         searchBar.endEditing(true)
-        let newData = items.filter { $0.id.description == searchBar.searchTextField.text ?? "" }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(newData)
-        self.dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

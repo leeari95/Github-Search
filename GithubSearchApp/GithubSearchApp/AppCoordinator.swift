@@ -22,7 +22,12 @@ final class AppCoordinator: Coordinator {
     
     func start() {
         let searchItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
-        let profileItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        let profileItem: UITabBarItem
+        if #available(iOS 13.0, *) {
+            profileItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        } else {
+            profileItem = UITabBarItem(title: "Profile", image: UIImage(named: "person"), tag: 1)
+        }
         
         let searchCoordinator = SearchCoordinator()
         searchCoordinator.parentCoordinator = self

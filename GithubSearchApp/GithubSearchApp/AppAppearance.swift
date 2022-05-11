@@ -9,8 +9,16 @@ import UIKit
 
 final class AppAppearance {
     static func setUpAppearance() {
-        UITabBar.appearance().tintColor = .label
-        UIBarButtonItem.appearance().tintColor = .label
+        if #available(iOS 13.0, *) {
+            UITabBar.appearance().tintColor = .label
+        } else {
+            UITabBar.appearance().tintColor = .white
+        }
+        if #available(iOS 13.0, *) {
+            UIBarButtonItem.appearance().tintColor = .label
+        } else {
+            UIBarButtonItem.appearance().tintColor = .white
+        }
         UINavigationBar.appearance().prefersLargeTitles = true
     }
 }

@@ -7,49 +7,70 @@
 
 import UIKit
 
-class RepoListCell: UICollectionViewListCell {
+class RepoListCell: UICollectionViewCell {
     var item: RepositoryItem?
+    
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var ownerLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var starredCountLabel: UILabel!
+    @IBOutlet var starredToggleButton: UIButton!
+
+    @IBOutlet var labelStackView: UIStackView!
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
     }
     
     required init?(coder: NSCoder) {
-        fatalError()
+        super.init(coder: coder)
     }
     
-    override func updateConfiguration(using state: UICellConfigurationState) {
-        var customConfiguration = RepoContentConfiguration().updated(for: state)
-        customConfiguration.item = item
-        customConfiguration.title = item?.name
-        customConfiguration.owner = item?.login
-        customConfiguration.description = item?.description
-        customConfiguration.starredCount = "★ \(item?.starredCount ?? 0)"
-        customConfiguration.isMarkStar = item?.isMarkedStar
-        contentConfiguration = customConfiguration
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        super.preferredLayoutAttributesFitting(layoutAttributes)
+        let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
+        layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+        return layoutAttributes
+    }
+    
+    override func prepareForReuse() {
+        reset()
+    }
 
-        let contentView = contentView as? RepoContentView
+    func configure(item: RepositoryItem?) {
+        self.item = item
+        titleLabel.text = item?.name
+        ownerLabel.text = item?.login
+        descriptionLabel.text = item?.description
+        starredCountLabel.text = "★ \(item?.starredCount.description ?? "0")"
         if item?.isMarkedStar == true {
-            contentView?.changeStarredToggleButton(systemName: "star.fill")
+            changeStarredToggleButton(imageName: "star.fill")
         } else {
-            contentView?.changeStarredToggleButton(systemName: "star")
+            changeStarredToggleButton(imageName: "star")
         }
     }
-}
-
-struct RepoContentConfiguration: UIContentConfiguration {
-    var item: RepositoryItem?
-    var title: String?
-    var owner: String?
-    var description: String?
-    var starredCount: String?
-    var isMarkStar: Bool?
     
-    func makeContentView() -> UIView & UIContentView {
-        return RepoContentView(self)
+    func changeStarredToggleButton(imageName: String) {
+        let starImage: UIImage?
+        starImage = UIImage(named: imageName)
+        starredToggleButton.setImage(starImage, for: .normal)
     }
     
-    func updated(for state: UIConfigurationState) -> Self {
-        return self
+    func toggle() {
+        if starredToggleButton.imageView?.image == UIImage(named: "star") {
+            changeStarredToggleButton(imageName: "star.fill")
+            starredCountLabel.text = "★ \((item?.starredCount ?? 0) + 1)"
+        } else {
+            changeStarredToggleButton(imageName: "star")
+            starredCountLabel.text = "★ \((item?.starredCount ?? 0))"
+        }
+    }
+    
+    private func reset() {
+        titleLabel.text = nil
+        ownerLabel.text = nil
+        descriptionLabel.text = nil
+        starredCountLabel.text = nil
+        changeStarredToggleButton(imageName: "star")
     }
 }
