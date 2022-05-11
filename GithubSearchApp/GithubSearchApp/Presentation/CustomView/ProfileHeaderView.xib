@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="profileHeader" id="U6b-Vx-4bR" customClass="ProfileHeaderView" customModule="GithubSearchApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="193"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hlL-WR-edj">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="193"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="9AD-jB-pqJ">
+                            <rect key="frame" x="96" y="1.5" width="128" height="125"/>
+                            <color key="tintColor" systemColor="systemGrayColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="128" id="G9j-HW-lL3"/>
+                                <constraint firstAttribute="width" secondItem="9AD-jB-pqJ" secondAttribute="height" multiplier="1:1" id="xVW-5F-JXk"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login is required." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XnP-Qb-OT0">
+                            <rect key="frame" x="102" y="136" width="116.5" height="57"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <constraints>
+                <constraint firstItem="hlL-WR-edj" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="JYJ-Xm-Eg0"/>
+                <constraint firstItem="hlL-WR-edj" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="cdF-cN-qbV"/>
+                <constraint firstAttribute="bottom" secondItem="hlL-WR-edj" secondAttribute="bottom" id="iQH-wH-ctQ"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="hlL-WR-edj" secondAttribute="trailing" id="plz-gg-2fe"/>
+            </constraints>
+            <connections>
+                <outlet property="nameLabel" destination="XnP-Qb-OT0" id="5w1-ff-ctK"/>
+                <outlet property="profileImage" destination="9AD-jB-pqJ" id="Rul-5Z-flh"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="186.49553571428569"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

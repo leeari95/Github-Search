@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9A689186282B9B120061AAF1 /* DynamicHeightFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A689185282B9B120061AAF1 /* DynamicHeightFlowLayout.swift */; };
 		9A689189282B9B630061AAF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A689187282B9B630061AAF1 /* LaunchScreen.storyboard */; };
+		9A68918C282BF04B0061AAF1 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68918A282BF04B0061AAF1 /* ProfileHeaderView.swift */; };
+		9A68918D282BF04B0061AAF1 /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A68918B282BF04B0061AAF1 /* ProfileHeaderView.xib */; };
 		9A6C2454282B880800BA019C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C2453282B880800BA019C /* AppDelegate.swift */; };
 		9A6C2456282B880800BA019C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C2455282B880800BA019C /* SceneDelegate.swift */; };
 		9A6C245D282B880900BA019C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A6C245C282B880900BA019C /* Assets.xcassets */; };
@@ -67,6 +69,8 @@
 /* Begin PBXFileReference section */
 		9A689185282B9B120061AAF1 /* DynamicHeightFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicHeightFlowLayout.swift; sourceTree = "<group>"; };
 		9A689188282B9B630061AAF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9A68918A282BF04B0061AAF1 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		9A68918B282BF04B0061AAF1 /* ProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
 		9A6C2450282B880800BA019C /* GithubSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A6C2453282B880800BA019C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9A6C2455282B880800BA019C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -338,6 +342,8 @@
 				9A6C24A5282B888100BA019C /* RepoListCell.swift */,
 				9A6C24A6282B888100BA019C /* RepoListCell.xib */,
 				9A689185282B9B120061AAF1 /* DynamicHeightFlowLayout.swift */,
+				9A68918A282BF04B0061AAF1 /* ProfileHeaderView.swift */,
+				9A68918B282BF04B0061AAF1 /* ProfileHeaderView.xib */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 				9A6C24DB282B888100BA019C /* RepoListCell.xib in Resources */,
 				9A689189282B9B630061AAF1 /* LaunchScreen.storyboard in Resources */,
 				9A6C24D5282B888100BA019C /* Storyboard.storyboard in Resources */,
+				9A68918D282BF04B0061AAF1 /* ProfileHeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +452,7 @@
 				9A689186282B9B120061AAF1 /* DynamicHeightFlowLayout.swift in Sources */,
 				9A6C24D0282B888100BA019C /* Observable.swift in Sources */,
 				9A6C24C5282B888100BA019C /* Secrets.swift in Sources */,
+				9A68918C282BF04B0061AAF1 /* ProfileHeaderView.swift in Sources */,
 				9A6C24B4282B888100BA019C /* DefaultUserRepository.swift in Sources */,
 				9A6C24BE282B888100BA019C /* AppCoordinator.swift in Sources */,
 				9A6C24D6282B888100BA019C /* LoadingReusableView.swift in Sources */,
