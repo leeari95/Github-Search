@@ -9,6 +9,19 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    let items = [
+               RepositoryItem(id: 123, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
+               RepositoryItem(id: 121, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
+               RepositoryItem(id: 122, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
+               RepositoryItem(id: 120, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
+               RepositoryItem(id: 124, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0),
+               RepositoryItem(id: 125, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
+               RepositoryItem(id: 126, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
+               RepositoryItem(id: 127, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
+               RepositoryItem(id: 128, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
+               RepositoryItem(id: 129, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0)
+           ]
+    
     var dataSource: UICollectionViewDiffableDataSource<Section, RepositoryItem>!
     var snapshot: NSDiffableDataSourceSnapshot<Section, RepositoryItem>!
     
@@ -82,7 +95,6 @@ class SearchViewController: UIViewController {
         }
         snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(items)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

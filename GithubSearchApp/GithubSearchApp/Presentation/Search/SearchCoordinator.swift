@@ -17,10 +17,7 @@ final class SearchCoordinator: Coordinator {
     }
     
     func start() {
-        
-        let viewModel = SearchViewModel()
         let searchViewController = SearchViewController()
-        searchViewController.viewModel = viewModel
         rootViewController.setViewControllers([searchViewController], animated: false)
     }
     

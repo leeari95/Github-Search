@@ -14,7 +14,6 @@ final class UserUseCase {
             guard KeychainStorage.shard.load("Token") != nil else {
                 return
             }
-            LoginManager.shared.executeNextWork(String(describing: SearchViewModel.self))
         }
     }
 
