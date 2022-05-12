@@ -8,9 +8,7 @@
 import Foundation
 
 protocol UserRepository {
-    var name: String? { get }
-    
-    var profileImageURL: String? { get }
+    var userInfo: User? { get }
     
     func fetchRepositories(
         path: String,

@@ -18,12 +18,8 @@ final class DefaultUserRepository: UserRepository {
     }
     private let storage: UserStorage
     
-    var name: String? {
-        user?.name
-    }
-    
-    var profileImageURL: String? {
-        user?.profileImageURL
+    var userInfo: User? {
+        return user
     }
     
     init(storage: UserStorage = DefaultUserStorage()) {

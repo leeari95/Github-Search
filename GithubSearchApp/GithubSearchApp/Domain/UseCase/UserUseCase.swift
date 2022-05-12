@@ -14,6 +14,8 @@ final class UserUseCase {
             guard KeychainStorage.shard.load("Token") != nil else {
                 return
             }
+            LoginManager.shared.executeNextWork(String(describing: SearchViewModel.self))
+            LoginManager.shared.executeNextWork(String(describing: ProfileViewModel.self))
         }
     }
 
@@ -21,12 +23,8 @@ final class UserUseCase {
         KeychainStorage.shard.load("Token") != nil
     }
     
-    var profile: (name: String, imageURL: String) {
-        return (repository.name ?? "", repository.profileImageURL ?? "")
-    }
-    
-    var userStarredList: [Int] {
-        return starredList
+    var user: User? {
+        return repository.userInfo
     }
     
     init(
@@ -38,8 +36,8 @@ final class UserUseCase {
         LoginManager.shared.addListener(self)
     }
     
-    func fetchRepositories(completion: @escaping (Result<[RepositoryItem], Error>) -> Void) {
-        repository.fetchStarredList { result in
+    func fetchRepositories(path: String, completion: @escaping (Result<[RepositoryItem], Error>) -> Void) {
+        repository.fetchRepositories(path: path) { result in
             switch result {
             case .success(let items):
                 completion(.success(items))

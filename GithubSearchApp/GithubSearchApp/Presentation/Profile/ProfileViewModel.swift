@@ -12,13 +12,12 @@ final class ProfileViewModel {
     
     // MARK: - OutPut
     let items: Observable<[RepositoryItem]> = Observable([])
+    let user: Observable<User> = Observable(User(login: "", name: "", profileImageURL: "", repoURL: "", starredURL: ""))
+    let isLoading: Observable<Bool> = Observable(false)
     
     init(useCase: UserUseCase = UserUseCase()) {
         self.useCase = useCase
         LoginManager.shared.addListener(self)
-        items.value = [
-            RepositoryItem(id: 123, name: "Ari", login: "leeari95", description: "Repository description", isMarkStar: true, starredCount: 0)
-        ]
     }
     
     // MARK: - Input
@@ -38,9 +37,22 @@ extension ProfileViewModel: AuthChangeListener {
     }
     func authStateDidChange(isLogged: Bool) {
         if isLogged {
-            
+            isLoading.value = true
+            user.value = useCase.user
+            let repoURL = user.value?.repoURL ?? ""
+            let path = user.value?.path(url: repoURL) ?? ""
+            useCase.fetchRepositories(path: path) { result in
+                switch result {
+                case .success(let items):
+                    self.items.value = items
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                self.isLoading.value = false
+            }
         } else {
-            
+            user.value = User(login: "", name: "", profileImageURL: "", repoURL: "", starredURL: "")
+            items.value = []
         }
     }
 }

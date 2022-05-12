@@ -91,8 +91,6 @@ class ProfileViewController: UIViewController {
             return cell
         }
         snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
-        snapshot.appendSections([.main])
-        dataSource.apply(snapshot, animatingDifferences: true)
         
         // Set Up HeaderView
         collectionView.register(
@@ -120,14 +118,16 @@ class ProfileViewController: UIViewController {
                 withReuseIdentifier: ProfileHeaderView.reuseIdentifier,
                 for: indexPath
             ) as? ProfileHeaderView
-            
-            headerView?.configure(nil)
+            headerView?.configure(self.viewModel?.user.value)
             return headerView
         }
+        
+        snapshot.appendSections([.main])
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func bind() {
-        viewModel?.items.observe({ newItems in
+        viewModel?.items.observe { newItems in
             var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
             snapshot.appendSections([.main])
             
@@ -141,7 +141,16 @@ class ProfileViewController: UIViewController {
             DispatchQueue.main.async {
                 self.dataSource.applySnapshotUsingReloadData(snapshot, completion: nil)
             }
-        })
+        }
+        viewModel?.isLoading.observe { completed in
+            DispatchQueue.main.async {
+                if completed {
+                    self.activityView.startAnimating()
+                } else {
+                    self.activityView.stopAnimating()
+                }
+            }
+        }
     }
 }
 

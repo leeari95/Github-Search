@@ -27,6 +27,11 @@ class ProfileHeaderView: UICollectionReusableView {
         imageView.image = UIImage(systemName: "person.fill")
         imageView.tintColor = .systemGray
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 48
+        imageView.layer.borderWidth = 0.2
+        imageView.backgroundColor = .systemGray5
+        imageView.layer.borderColor = UIColor.label.cgColor
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -46,11 +51,13 @@ class ProfileHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         setUpSubViews()
         setUpLayout()
+        backgroundColor = .black
     }
     
     func configure(_ user: User?) {
-        guard let user = user else {
+        guard let user = user, user.name != "" else {
             nameLabel.text = "Login is required."
+            profileImageView.image = UIImage(systemName: "person.fill")
             return
         }
         profileImageView.load(url: user.profileImageURL, placeholder: nil)
@@ -65,12 +72,12 @@ class ProfileHeaderView: UICollectionReusableView {
     
     private func setUpLayout() {
         NSLayoutConstraint.activate([
-            backgroundStackView.topAnchor.constraint(equalTo: topAnchor),
+            backgroundStackView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             backgroundStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
             backgroundStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             backgroundStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: 128),
-            profileImageView.heightAnchor.constraint(equalToConstant: 128)
+            profileImageView.widthAnchor.constraint(equalToConstant: 96),
+            profileImageView.heightAnchor.constraint(equalToConstant: 96)
         ])
     }
 }
