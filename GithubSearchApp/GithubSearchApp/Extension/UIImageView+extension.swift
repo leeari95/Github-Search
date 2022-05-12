@@ -11,7 +11,7 @@ extension UIImageView {
     private var activityIndicator: UIActivityIndicatorView {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.color = UIColor.black
+        activityIndicator.color = .gray
         self.addSubview(activityIndicator)
         
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -44,12 +44,18 @@ extension UIImageView {
             self.image = cachedImage
         } else {
             activityIndicator.startAnimating()
-            DefaultCacheStorage.shared.downloadImage(with: url) { image in
-                DefaultCacheStorage.shared.setImage(of: image, for: url)
-                self.image = image
-                DispatchQueue.main.async {
+            DefaultCacheStorage.shared.downloadImage(with: url) { result in
+                switch result {
+                case .success(let image):
+                    DefaultCacheStorage.shared.setImage(of: image, for: url)
+                    DispatchQueue.main.async {
+                        self.image = image
+                        activityIndicator.stopAnimating()
+                        activityIndicator.removeFromSuperview()
+                    }
+                case .failure(let error):
+                    print("Failed to load image.\nerror: \(error)")
                     activityIndicator.stopAnimating()
-                    activityIndicator.removeFromSuperview()
                 }
             }
         }

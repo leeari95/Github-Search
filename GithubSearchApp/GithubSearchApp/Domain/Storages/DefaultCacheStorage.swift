@@ -25,7 +25,7 @@ class DefaultCacheStorage {
     
     func downloadImage(
         with url: String,
-        completion: @escaping (UIImage) -> Void
+        completion: @escaping (Result<UIImage, Error>) -> Void
     ) {
         let apiProvider = DefaultAPIProvider()
         
@@ -40,11 +40,9 @@ class DefaultCacheStorage {
                 guard let data = data, let image = UIImage(data: data) else {
                     return
                 }
-                DispatchQueue.main.async {
-                    completion(image)
-                }
+                completion(.success(image))
             case .failure(let error):
-                print(error.localizedDescription)
+                completion(.failure(error))
             }
         }
     }
