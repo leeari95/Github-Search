@@ -9,18 +9,7 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
-    let items = [
-               RepositoryItem(id: 123, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
-               RepositoryItem(id: 121, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-               RepositoryItem(id: 122, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-               RepositoryItem(id: 120, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
-               RepositoryItem(id: 124, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0),
-               RepositoryItem(id: 125, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 123),
-               RepositoryItem(id: 126, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-               RepositoryItem(id: 127, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 0),
-               RepositoryItem(id: 128, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: false, starredCount: 99),
-               RepositoryItem(id: 129, name: "Repository Title", login: "leeari95", description: "Repository Description", isMarkStar: true, starredCount: 0)
-           ]
+    var viewModel: SearchViewModel?
     
     var dataSource: UICollectionViewDiffableDataSource<Section, RepositoryItem>!
     var snapshot: NSDiffableDataSourceSnapshot<Section, RepositoryItem>!
@@ -67,9 +56,22 @@ class SearchViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = true
         navigationController?.navigationBar.sizeToFit()
         
-        let loginButton = UIBarButtonItem(title: "Login", style: .plain, target: nil, action: nil)
+        let loginButton = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(didTapLoginButton(_:)))
         loginButton.tintColor = .label
         navigationItem.rightBarButtonItem = loginButton
+    }
+    
+    @objc private func didTapLoginButton(_ sender: UIBarButtonItem) {
+        if KeychainStorage.shard.load("Token") != nil {
+            showAlert(title: "Notice", message: "Are you sure you want to log out?") {
+                self.viewModel?.didTapLogoutButton()
+                DispatchQueue.main.async {
+                    self.navigationItem.rightBarButtonItem?.title = "Login"
+                }
+            }
+        } else {
+            viewModel?.didTapLoginButton()
+        }
     }
     
     func setUpSubViews() {
@@ -117,10 +119,10 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         searchBar.endEditing(true)
-        let newData = items.filter { $0.id.description == searchBar.searchTextField.text ?? "" }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(newData)
-        self.dataSource.apply(snapshot, animatingDifferences: true)
+//        let newData = items.filter { $0.id.description == searchBar.searchTextField.text ?? "" }
+//        var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
+//        snapshot.appendSections([.main])
+//        snapshot.appendItems(newData)
+//        self.dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

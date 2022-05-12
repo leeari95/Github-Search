@@ -46,6 +46,7 @@
 		9A49B3BA2827A82F00D13410 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3B92827A82F00D13410 /* ProfileViewController.swift */; };
 		9A49B3C22827BA3F00D13410 /* RepoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3C12827BA3F00D13410 /* RepoContentView.swift */; };
 		9A49B3C42827BA6800D13410 /* RepoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3C32827BA6800D13410 /* RepoListCell.swift */; };
+		9A68918F282CA9C40061AAF1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */; };
 		9A6C237C2828DCCD00BA019C /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */; };
 		9A6C237E2828E0A100BA019C /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237D2828E0A100BA019C /* Observable.swift */; };
 		9A6C238528291EAD00BA019C /* AuthChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C238428291EAD00BA019C /* AuthChangeListener.swift */; };
@@ -100,6 +101,7 @@
 		9A49B3B92827A82F00D13410 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		9A49B3C12827BA3F00D13410 /* RepoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoContentView.swift; sourceTree = "<group>"; };
 		9A49B3C32827BA6800D13410 /* RepoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListCell.swift; sourceTree = "<group>"; };
+		9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		9A6C237D2828E0A100BA019C /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		9A6C238428291EAD00BA019C /* AuthChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChangeListener.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 			children = (
 				9A6C2394282AACDD00BA019C /* SearchCoordinator.swift */,
 				9A49B3532822916B00D13410 /* SearchViewController.swift */,
+				9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				9A49B3A7282592E300D13410 /* DefaultSearchStorage.swift in Sources */,
 				9A6C237E2828E0A100BA019C /* Observable.swift in Sources */,
 				9A49B3A12825095F00D13410 /* UserStorage.swift in Sources */,
+				9A68918F282CA9C40061AAF1 /* SearchViewModel.swift in Sources */,
 				9A49B3782822F04700D13410 /* APIResponse.swift in Sources */,
 				9A49B3A528258B2400D13410 /* UserRepository.swift in Sources */,
 				9A49B3A92825947100D13410 /* SearchStorage.swift in Sources */,

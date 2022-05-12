@@ -24,10 +24,13 @@ final class AppCoordinator: Coordinator {
         let searchItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
         let profileItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
         
+        let userUseCase = UserUseCase()
+        
         let searchCoordinator = SearchCoordinator()
         searchCoordinator.parentCoordinator = self
         searchCoordinator.start()
-        let searchViewController = searchCoordinator.starPush()
+        let searchViewModel = SearchViewModel(useCase: SearchUseCase(), userUseCase: userUseCase)
+        let searchViewController = searchCoordinator.starPush(viewModel: searchViewModel)
         searchViewController.tabBarItem = searchItem
         
         let profileCoordinator = ProfileCoordinator()
