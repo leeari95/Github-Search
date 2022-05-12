@@ -21,6 +21,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
+        KeychainStorage.shard.delete(key: "Token")
         let searchItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
         let profileItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
         
@@ -36,7 +37,8 @@ final class AppCoordinator: Coordinator {
         let profileCoordinator = ProfileCoordinator()
         profileCoordinator.parentCoordinator = self
         profileCoordinator.start()
-        let profileViewController = profileCoordinator.starPush()
+        let profileViewModel = ProfileViewModel(useCase: userUseCase)
+        let profileViewController = profileCoordinator.starPush(viewModel: profileViewModel)
         profileViewController.tabBarItem = profileItem
         
         rootViewController.viewControllers = [searchViewController, profileViewController]

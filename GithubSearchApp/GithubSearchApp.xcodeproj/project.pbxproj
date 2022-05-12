@@ -47,6 +47,7 @@
 		9A49B3C22827BA3F00D13410 /* RepoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3C12827BA3F00D13410 /* RepoContentView.swift */; };
 		9A49B3C42827BA6800D13410 /* RepoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3C32827BA6800D13410 /* RepoListCell.swift */; };
 		9A68918F282CA9C40061AAF1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */; };
+		9A689191282CCA130061AAF1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A689190282CCA130061AAF1 /* ProfileViewModel.swift */; };
 		9A6C237C2828DCCD00BA019C /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */; };
 		9A6C237E2828E0A100BA019C /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237D2828E0A100BA019C /* Observable.swift */; };
 		9A6C238528291EAD00BA019C /* AuthChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C238428291EAD00BA019C /* AuthChangeListener.swift */; };
@@ -102,6 +103,7 @@
 		9A49B3C12827BA3F00D13410 /* RepoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoContentView.swift; sourceTree = "<group>"; };
 		9A49B3C32827BA6800D13410 /* RepoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListCell.swift; sourceTree = "<group>"; };
 		9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		9A689190282CCA130061AAF1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		9A6C237D2828E0A100BA019C /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		9A6C238428291EAD00BA019C /* AuthChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChangeListener.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 			children = (
 				9A6C2396282AACE900BA019C /* ProfileCoordinator.swift */,
 				9A49B3B92827A82F00D13410 /* ProfileViewController.swift */,
+				9A689190282CCA130061AAF1 /* ProfileViewModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 				9A49B3722822DDBE00D13410 /* UserResponseDTO.swift in Sources */,
 				9A49B36E2822BDF900D13410 /* KeychainStorage.swift in Sources */,
 				9A6C2397282AACE900BA019C /* ProfileCoordinator.swift in Sources */,
+				9A689191282CCA130061AAF1 /* ProfileViewModel.swift in Sources */,
 				9A6C238F282A913D00BA019C /* Section.swift in Sources */,
 				9A49B3912823CEFA00D13410 /* UserRepoListRequest.swift in Sources */,
 				9A6C238528291EAD00BA019C /* AuthChangeListener.swift in Sources */,

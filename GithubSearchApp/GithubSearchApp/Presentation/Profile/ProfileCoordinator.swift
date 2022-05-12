@@ -23,7 +23,8 @@ final class ProfileCoordinator: Coordinator {
         rootViewController.setViewControllers([profileViewController], animated: false)
     }
     
-    func starPush() -> UINavigationController {
+    func starPush(viewModel: ProfileViewModel) -> UINavigationController {
+        topViewController?.viewModel = viewModel
         return rootViewController
     }
 }
