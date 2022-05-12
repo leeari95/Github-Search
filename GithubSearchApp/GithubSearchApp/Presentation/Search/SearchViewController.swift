@@ -22,6 +22,7 @@ class SearchViewController: UIViewController {
         collectionView.backgroundColor = .systemGroupedBackground
         collectionView.keyboardDismissMode = .onDrag
         collectionView.delegate = self
+        collectionView.prefetchDataSource = self
         return collectionView
     }()
     
@@ -48,6 +49,7 @@ class SearchViewController: UIViewController {
         setUpNavigationItem()
         setUpSubViews()
         setUpCollectionView()
+        bind()
     }
     
     func setUpNavigationItem() {
@@ -99,6 +101,34 @@ class SearchViewController: UIViewController {
         snapshot.appendSections([.main])
         dataSource.apply(snapshot, animatingDifferences: true)
     }
+    
+    func bind() {
+        viewModel?.items.observe { newItems in
+            var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
+            snapshot.appendSections([.main])
+            
+            let diff = newItems.difference(from: snapshot.itemIdentifiers)
+            let currentIdentifiers = snapshot.itemIdentifiers
+            guard let newIdentifiers = currentIdentifiers.applying(diff) else {
+                return
+            }
+            snapshot.deleteItems(currentIdentifiers)
+            snapshot.appendItems(newIdentifiers)
+            DispatchQueue.main.async {
+                self.dataSource.applySnapshotUsingReloadData(snapshot, completion: nil)
+            }
+        }
+        
+        viewModel?.isLoading.observe { completed in
+            DispatchQueue.main.async {
+                if completed {
+                    self.activityView.startAnimating()
+                } else {
+                    self.activityView.stopAnimating()
+                }
+            }
+        }
+    }
 }
 
 extension SearchViewController: UICollectionViewDelegate {
@@ -119,10 +149,16 @@ extension SearchViewController: UISearchBarDelegate {
             return
         }
         searchBar.endEditing(true)
-//        let newData = items.filter { $0.id.description == searchBar.searchTextField.text ?? "" }
-//        var snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
-//        snapshot.appendSections([.main])
-//        snapshot.appendItems(newData)
-//        self.dataSource.apply(snapshot, animatingDifferences: true)
+        viewModel?.didSearch(keyword: searchBar.searchTextField.text ?? "")
+    }
+}
+
+extension SearchViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        let lastRow = indexPaths.last?.row
+        let readyPrefetchingRow = (viewModel?.items.value?.count ?? 0) - 2
+        if lastRow == readyPrefetchingRow {
+            viewModel?.didScroll()
+        }
     }
 }

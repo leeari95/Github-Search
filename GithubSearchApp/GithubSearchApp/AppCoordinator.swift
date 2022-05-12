@@ -29,7 +29,7 @@ final class AppCoordinator: Coordinator {
         let searchCoordinator = SearchCoordinator()
         searchCoordinator.parentCoordinator = self
         searchCoordinator.start()
-        let searchViewModel = SearchViewModel(useCase: SearchUseCase(), userUseCase: userUseCase)
+        let searchViewModel = SearchViewModel(seachUseCase: SearchUseCase(), userUseCase: userUseCase)
         let searchViewController = searchCoordinator.starPush(viewModel: searchViewModel)
         searchViewController.tabBarItem = searchItem
         

@@ -36,18 +36,6 @@ final class UserUseCase {
         self.repository = repository
         self.starredList = starredList
         LoginManager.shared.addListener(self)
-        NotificationCenter.default.addObserver(self, selector: #selector(starred(_:)), name: .starred, object: nil)
-    }
-    
-    @objc private func starred(_ sender: Notification) {
-        guard let item = sender.object as? RepositoryItem else {
-            return
-        }
-        toggleStarred(for: item) { error in
-            if let error = error {
-                print(error.localizedDescription)
-            }
-        }
     }
     
     func fetchRepositories(completion: @escaping (Result<[RepositoryItem], Error>) -> Void) {
@@ -89,6 +77,21 @@ final class UserUseCase {
                 }
             }
         }
+    }
+    
+    func checkedStarred(for items: [RepositoryItem]) -> [RepositoryItem] {
+        guard LoginManager.shared.isLogged else {
+            return items
+        }
+        var items = items
+        items = items.map { item in
+            var item = item
+            if self.starredList.contains(item.id) {
+                item.changedMarkState(for: true)
+            }
+            return item
+        }
+        return items
     }
 }
 
