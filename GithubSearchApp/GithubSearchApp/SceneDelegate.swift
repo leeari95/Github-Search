@@ -22,9 +22,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         let mainViewController = (self.window?.rootViewController as? UITabBarController)
                             .flatMap { $0.selectedViewController as? UINavigationController }
                             .flatMap { $0.topViewController as? SearchViewController }
+                        let profileViewCotroller = (self.window?.rootViewController as? UITabBarController)
+                            .flatMap { $0.viewControllers?[1] as? UINavigationController }
+                            .flatMap { $0.topViewController as? ProfileViewController }
 
                         if isLogin {
                             mainViewController?.navigationItem.rightBarButtonItem?.title = "Logout"
+                            profileViewCotroller?.navigationItem.rightBarButtonItem?.title = "Logout"
                         } else {
                             mainViewController?.showAlert(title: "Notice", message: "Login failed.", completion: nil)
                         }
