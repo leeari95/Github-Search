@@ -11,10 +11,23 @@ final class ProfileViewModel {
     private let useCase: UserUseCase
     
     // MARK: - OutPut
+    let items: Observable<[RepositoryItem]> = Observable([])
     
     init(useCase: UserUseCase = UserUseCase()) {
         self.useCase = useCase
         LoginManager.shared.addListener(self)
+        items.value = [
+            RepositoryItem(id: 123, name: "Ari", login: "leeari95", description: "Repository description", isMarkStar: true, starredCount: 0)
+        ]
+    }
+    
+    // MARK: - Input
+    func didTapLoginButton() {
+        LoginManager.shared.authorize()
+    }
+    
+    func didTapLogoutButton() {
+        LoginManager.shared.logout()
     }
 }
 

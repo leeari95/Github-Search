@@ -48,6 +48,7 @@
 		9A49B3C42827BA6800D13410 /* RepoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A49B3C32827BA6800D13410 /* RepoListCell.swift */; };
 		9A68918F282CA9C40061AAF1 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */; };
 		9A689191282CCA130061AAF1 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A689190282CCA130061AAF1 /* ProfileViewModel.swift */; };
+		9A689193282CCD7D0061AAF1 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A689192282CCD7D0061AAF1 /* ProfileHeaderView.swift */; };
 		9A6C237C2828DCCD00BA019C /* UIViewController+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */; };
 		9A6C237E2828E0A100BA019C /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C237D2828E0A100BA019C /* Observable.swift */; };
 		9A6C238528291EAD00BA019C /* AuthChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6C238428291EAD00BA019C /* AuthChangeListener.swift */; };
@@ -104,6 +105,7 @@
 		9A49B3C32827BA6800D13410 /* RepoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListCell.swift; sourceTree = "<group>"; };
 		9A68918E282CA9C40061AAF1 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		9A689190282CCA130061AAF1 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		9A689192282CCD7D0061AAF1 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		9A6C237B2828DCCD00BA019C /* UIViewController+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extension.swift"; sourceTree = "<group>"; };
 		9A6C237D2828E0A100BA019C /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		9A6C238428291EAD00BA019C /* AuthChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChangeListener.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			children = (
 				9A49B3C32827BA6800D13410 /* RepoListCell.swift */,
 				9A49B3C12827BA3F00D13410 /* RepoContentView.swift */,
+				9A689192282CCD7D0061AAF1 /* ProfileHeaderView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				9A49B38B2823CA5200D13410 /* UserInfoRequest.swift in Sources */,
 				9A49B37A2822F08000D13410 /* APIProvider.swift in Sources */,
 				9A49B3892823C32900D13410 /* User.swift in Sources */,
+				9A689193282CCD7D0061AAF1 /* ProfileHeaderView.swift in Sources */,
 				9A6C2393282A9E8C00BA019C /* AppCoordinator.swift in Sources */,
 				9A49B3722822DDBE00D13410 /* UserResponseDTO.swift in Sources */,
 				9A49B36E2822BDF900D13410 /* KeychainStorage.swift in Sources */,
