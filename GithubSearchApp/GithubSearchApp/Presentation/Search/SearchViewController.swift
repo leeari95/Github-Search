@@ -58,7 +58,7 @@ class SearchViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = true
         navigationController?.navigationBar.sizeToFit()
         
-        let loginButton = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(didTapLoginButton(_:)))
+        let loginButton = UIBarButtonItem(title: LoginManager.shared.isLogged ? "Logout" : "Login", style: .plain, target: self, action: #selector(didTapLoginButton(_:)))
         loginButton.tintColor = .label
         navigationItem.rightBarButtonItem = loginButton
     }
