@@ -19,7 +19,6 @@ class RepoContentView: UIView, UIContentView {
         super.init(frame: .zero)
         setUpSubViews()
         setUpLayout()
-        setUpStarredButton()
         apply(configuration: configuration)
     }
     
@@ -123,20 +122,7 @@ class RepoContentView: UIView, UIContentView {
             backgroundStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor,constant: -12)
         ])
     }
-    
-    private func setUpStarredButton() {
-        starredToggleButton.addTarget(self, action: #selector(didTapStarredButton(_:)), for: .touchUpInside)
-    }
-    
-    @objc private func didTapStarredButton(_ sender: UIButton) {
-        guard KeychainStorage.shard.load("Token") != nil else {
-            NotificationCenter.default.post(name: .showNotiAlert, object: Message(title: "Not logged in", description: "Login is required."))
-            return
-        }
-        let item = (configuration as? RepoContentConfiguration)?.item
-        NotificationCenter.default.post(name: .starred, object: item)
-    }
-    
+
     func changeStarredToggleButton(systemName: String) {
         let starImage = UIImage(systemName: systemName)
         starredToggleButton.setImage(starImage, for: .normal)
