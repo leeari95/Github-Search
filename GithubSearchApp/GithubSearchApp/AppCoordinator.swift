@@ -39,6 +39,7 @@ final class AppCoordinator: Coordinator {
         profileCoordinator.start()
         let profileViewModel = ProfileViewModel(useCase: userUseCase)
         let profileViewController = profileCoordinator.starPush(viewModel: profileViewModel)
+        searchViewModel.delegate = profileViewModel
         profileViewController.tabBarItem = profileItem
         
         rootViewController.viewControllers = [searchViewController, profileViewController]

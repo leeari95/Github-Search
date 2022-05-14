@@ -7,12 +7,17 @@
 
 import Foundation
 
+protocol ProfileViewModelDelegate {
+    func updatedItem(with item: RepositoryItem)
+}
+
 final class SearchViewModel {
     
     private let seachUseCase: SearchUseCase
     private let userUseCase: UserUseCase
     private var currentPage: UInt = 1
     private var lastKeyword: String = ""
+    var delegate: ProfileViewModelDelegate?
     
     // MARK: - Output
     let items: Observable<[RepositoryItem]> = Observable([])
@@ -67,8 +72,14 @@ final class SearchViewModel {
                 print(error.localizedDescription)
                 return
             }
-            if let index = self.items.value?.map({ $0.id }).firstIndex(of: item.id), let newItem = newItem {
+            guard let newItem = newItem else {
+                return
+            }
+            if let index = self.items.value?.map({ $0.id }).firstIndex(of: item.id) {
                 self.items.value?[index] = newItem
+            }
+            if item.login == self.userUseCase.user?.login {
+                self.delegate?.updatedItem(with: newItem)
             }
         }
     }
@@ -82,9 +93,12 @@ extension SearchViewModel: AuthChangeListener {
     }
     
     func authStateDidChange(isLogged: Bool) {
+        guard items.value?.isEmpty == false else {
+            return
+        }
         if isLogged {
             items.value = userUseCase.checkedStarred(for: items.value ?? [])
-        } else {
+        } else if isLogged {
             items.value = items.value?.compactMap { item in
                 var item = item
                 item.changedMarkState(for: false)

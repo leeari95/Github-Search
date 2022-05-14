@@ -36,7 +36,7 @@ extension ProfileViewModel: AuthChangeListener {
         return String(describing: ProfileViewModel.self)
     }
     func authStateDidChange(isLogged: Bool) {
-        if isLogged {
+        if isLogged == true, items.value?.isEmpty == true {
             isLoading.value = true
             user.value = useCase.user
             let repoURL = user.value?.repoURL ?? ""
@@ -44,15 +44,23 @@ extension ProfileViewModel: AuthChangeListener {
             useCase.fetchRepositories(path: path) { result in
                 switch result {
                 case .success(let items):
-                    self.items.value = items
+                    self.items.value = self.useCase.checkedStarred(for: items)
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
                 self.isLoading.value = false
             }
-        } else {
+        } else if isLogged == false {
             user.value = User(login: "", name: "", profileImageURL: "", repoURL: "", starredURL: "")
             items.value = []
+        }
+    }
+}
+
+extension ProfileViewModel: ProfileViewModelDelegate {
+    func updatedItem(with item: RepositoryItem) {
+        if let index = self.items.value?.compactMap({ $0.id }).firstIndex(of: item.id) {
+            self.items.value?[index] = item
         }
     }
 }
