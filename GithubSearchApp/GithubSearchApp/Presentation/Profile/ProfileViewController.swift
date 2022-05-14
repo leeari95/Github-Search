@@ -88,6 +88,9 @@ class ProfileViewController: UIViewController {
                 for: indexPath,
                 item: item
             )
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.didTapCell(_:)))
+            tap.cancelsTouchesInView = false
+            cell.addGestureRecognizer(tap)
             return cell
         }
         snapshot = NSDiffableDataSourceSnapshot<Section, RepositoryItem>()
@@ -124,6 +127,30 @@ class ProfileViewController: UIViewController {
         
         snapshot.appendSections([.main])
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    @objc func didTapCell(_ gestureRecognizer: UIGestureRecognizer) {
+        let touchLocation = gestureRecognizer.location(in: gestureRecognizer.view)
+        let cellSize = gestureRecognizer.view?.frame.size ?? CGSize()
+        let heightCenter = cellSize.height / 2
+        let isTappedStarredButton = (cellSize.width * 0.9...cellSize.width * 0.95).contains(touchLocation.x)
+        && (heightCenter - 10...heightCenter + 15).contains(touchLocation.y)
+        
+        guard isTappedStarredButton else {
+            return
+        }
+        guard LoginManager.shared.isLogged else {
+            showAlert(title: "Not logged in", message: "Login is required.") {
+                self.viewModel?.didTapLoginButton()
+            }
+            return
+        }
+        guard let cell = gestureRecognizer.view as? UICollectionViewListCell,
+        let indexPath = self.collectionView.indexPath(for: cell),
+        let repositoryItem = self.dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        viewModel?.starred(repositoryItem)
     }
     
     func bind() {

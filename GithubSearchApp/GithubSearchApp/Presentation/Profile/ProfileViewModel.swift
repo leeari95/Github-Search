@@ -7,8 +7,13 @@
 
 import Foundation
 
+protocol SearchViewModelDelegate: AnyObject {
+    func updatedItem(with item: RepositoryItem)
+}
+
 final class ProfileViewModel {
     private let useCase: UserUseCase
+    weak var delegate: SearchViewModelDelegate?
     
     // MARK: - OutPut
     let items: Observable<[RepositoryItem]> = Observable([])
@@ -27,6 +32,22 @@ final class ProfileViewModel {
     
     func didTapLogoutButton() {
         LoginManager.shared.logout()
+    }
+    
+    func starred(_ item: RepositoryItem) {
+        useCase.toggleStarred(for: item) { newItem, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let newItem = newItem else {
+                return
+            }
+            if let index = self.items.value?.map({ $0.id }).firstIndex(of: item.id) {
+                self.items.value?[index] = newItem
+            }
+            self.delegate?.updatedItem(with: newItem)
+        }
     }
 }
 

@@ -94,7 +94,11 @@ class SearchViewController: UIViewController {
             cell.item = item
         }
         dataSource = UICollectionViewDiffableDataSource<Section, RepositoryItem>(collectionView: collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, item: RepositoryItem) -> UICollectionViewCell? in
-            let cell = collectionView.dequeueConfiguredReusableCell(using: registration, for: indexPath, item: item)
+            let cell = collectionView.dequeueConfiguredReusableCell(
+                using: registration,
+                for: indexPath,
+                item: item
+            )
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.didTapCell(_:)))
             tap.cancelsTouchesInView = false
             cell.addGestureRecognizer(tap)

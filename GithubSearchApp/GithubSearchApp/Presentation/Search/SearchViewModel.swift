@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ProfileViewModelDelegate {
+protocol ProfileViewModelDelegate: AnyObject {
     func updatedItem(with item: RepositoryItem)
 }
 
@@ -17,7 +17,7 @@ final class SearchViewModel {
     private let userUseCase: UserUseCase
     private var currentPage: UInt = 1
     private var lastKeyword: String = ""
-    var delegate: ProfileViewModelDelegate?
+    weak var delegate: ProfileViewModelDelegate?
     
     // MARK: - Output
     let items: Observable<[RepositoryItem]> = Observable([])
@@ -106,5 +106,13 @@ extension SearchViewModel: AuthChangeListener {
             }
         }
     }
+}
 
+extension SearchViewModel: SearchViewModelDelegate {
+    func updatedItem(with item: RepositoryItem) {
+        guard let index = self.items.value?.compactMap({ $0.id }).firstIndex(of: item.id) else {
+            return
+        }
+        self.items.value?[index] = item
+    }
 }
