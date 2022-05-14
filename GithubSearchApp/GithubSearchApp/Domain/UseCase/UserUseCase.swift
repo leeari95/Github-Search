@@ -49,19 +49,18 @@ final class UserUseCase {
     
     func toggleStarred(
         for item: RepositoryItem,
-        completion: @escaping (Error?) -> Void
+        completion: @escaping (RepositoryItem?, Error?) -> Void
     ) {
-        if starredList.contains(item.id) {
+        var item = item
+        if let index = self.starredList.firstIndex(of: item.id) {
             repository.unStar(name: item.login, title: item.name) { result in
                 switch result {
                 case .success:
-                    guard let index = self.starredList.firstIndex(of: item.id) else {
-                        return
-                    }
                     self.starredList.remove(at: index)
-                    completion(nil)
+                    item.toggleStarred()
+                    completion(item, nil)
                 case .failure(let error):
-                    completion(error)
+                    completion(nil, error)
                 }
             }
         } else {
@@ -69,9 +68,10 @@ final class UserUseCase {
                 switch result {
                 case .success:
                     self.starredList.append(item.id)
-                    completion(nil)
+                    item.toggleStarred()
+                    completion(item, nil)
                 case .failure(let error):
-                    completion(error)
+                    completion(nil, error)
                 }
             }
         }

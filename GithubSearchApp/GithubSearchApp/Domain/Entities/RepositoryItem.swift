@@ -37,11 +37,12 @@ struct RepositoryItem: Equatable, Hashable {
     }
     
     mutating func toggleStarred() {
-        isMarkedStar.toggle()
         if isMarkedStar {
-            starredCount += 1
-        } else {
             starredCount -= 1
+            isMarkedStar = false
+        } else {
+            starredCount += 1
+            isMarkedStar = true
         }
     }
 }

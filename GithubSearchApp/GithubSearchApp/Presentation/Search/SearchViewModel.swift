@@ -61,6 +61,18 @@ final class SearchViewModel {
         }
     }
     
+    func starred(_ item: RepositoryItem) {
+        userUseCase.toggleStarred(for: item) { newItem, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            if let index = self.items.value?.map({ $0.id }).firstIndex(of: item.id), let newItem = newItem {
+                self.items.value?[index] = newItem
+            }
+        }
+    }
+    
 
 }
 // MARK: - Login event handler
@@ -70,7 +82,15 @@ extension SearchViewModel: AuthChangeListener {
     }
     
     func authStateDidChange(isLogged: Bool) {
-
+        if isLogged {
+            items.value = userUseCase.checkedStarred(for: items.value ?? [])
+        } else {
+            items.value = items.value?.compactMap { item in
+                var item = item
+                item.changedMarkState(for: false)
+                return item
+            }
+        }
     }
 
 }
