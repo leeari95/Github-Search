@@ -50,6 +50,7 @@ class SearchViewController: UIViewController {
         setUpSubViews()
         setUpCollectionView()
         bind()
+        edgesForExtendedLayout = .bottom
     }
     
     func setUpNavigationItem() {
