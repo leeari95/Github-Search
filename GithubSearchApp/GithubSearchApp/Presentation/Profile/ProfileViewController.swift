@@ -178,6 +178,15 @@ class ProfileViewController: UIViewController {
                 }
             }
         }
+        viewModel?.isLogged.observe({ isLogged in
+            DispatchQueue.main.async {
+                if isLogged {
+                    self.navigationItem.rightBarButtonItem?.title = "Logout"
+                } else {
+                    self.navigationItem.rightBarButtonItem?.title = "Login"
+                }
+            }
+        })
     }
 }
 

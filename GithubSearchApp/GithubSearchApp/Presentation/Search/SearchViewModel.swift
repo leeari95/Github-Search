@@ -23,6 +23,7 @@ final class SearchViewModel {
     let items: Observable<[RepositoryItem]> = Observable([])
     let errorMesaage: Observable<Message> = Observable(Message(title: "", description: ""))
     let isLoading: Observable<Bool> = Observable(false)
+    let isLogged: Observable<Bool> = Observable(false)
     
     init(seachUseCase: SearchUseCase = SearchUseCase(), userUseCase: UserUseCase = UserUseCase()) {
         self.seachUseCase = seachUseCase
@@ -93,12 +94,13 @@ extension SearchViewModel: AuthChangeListener {
     }
     
     func authStateDidChange(isLogged: Bool) {
+        self.isLogged.value = isLogged
         guard items.value?.isEmpty == false else {
             return
         }
         if isLogged {
             items.value = userUseCase.checkedStarred(for: items.value ?? [])
-        } else if isLogged {
+        } else if isLogged == false {
             items.value = items.value?.compactMap { item in
                 var item = item
                 item.changedMarkState(for: false)

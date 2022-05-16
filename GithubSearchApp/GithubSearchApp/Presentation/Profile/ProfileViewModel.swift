@@ -19,6 +19,7 @@ final class ProfileViewModel {
     let items: Observable<[RepositoryItem]> = Observable([])
     let user: Observable<User> = Observable(User(login: "", name: "", profileImageURL: "", repoURL: "", starredURL: ""))
     let isLoading: Observable<Bool> = Observable(false)
+    let isLogged: Observable<Bool> = Observable(false)
     
     init(useCase: UserUseCase = UserUseCase()) {
         self.useCase = useCase
@@ -57,6 +58,7 @@ extension ProfileViewModel: AuthChangeListener {
         return String(describing: ProfileViewModel.self)
     }
     func authStateDidChange(isLogged: Bool) {
+        self.isLogged.value = isLogged
         if isLogged == true, items.value?.isEmpty == true {
             isLoading.value = true
             user.value = useCase.user

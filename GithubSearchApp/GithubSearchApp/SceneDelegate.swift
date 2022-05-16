@@ -17,19 +17,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         code.flatMap {
             LoginManager.shared.requestToken(code: $0) { result in
                 switch result {
-                case .success(let isLogin):
+                case .success(let isLogged):
                     DispatchQueue.main.async {
                         let mainViewController = (self.window?.rootViewController as? UITabBarController)
                             .flatMap { $0.selectedViewController as? UINavigationController }
                             .flatMap { $0.topViewController as? SearchViewController }
-                        let profileViewCotroller = (self.window?.rootViewController as? UITabBarController)
-                            .flatMap { $0.viewControllers?[1] as? UINavigationController }
-                            .flatMap { $0.topViewController as? ProfileViewController }
+//                        let profileViewCotroller = (self.window?.rootViewController as? UITabBarController)
+//                            .flatMap { $0.viewControllers?[1] as? UINavigationController }
+//                            .flatMap { $0.topViewController as? ProfileViewController }
 
-                        if isLogin {
-                            mainViewController?.navigationItem.rightBarButtonItem?.title = "Logout"
-                            profileViewCotroller?.navigationItem.rightBarButtonItem?.title = "Logout"
-                        } else {
+                        if isLogged == false {
                             mainViewController?.showAlert(title: "Notice", message: "Login failed.", completion: nil)
                         }
                     }
